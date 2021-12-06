@@ -4,22 +4,12 @@ import day05.mapping.lines.*
 import day05.mapping.lines.types.*
 import day05.mapping.points.Point
 
-class StraightLineCreator : LineCreator {
+class StraightLineCreator : LineCreator() {
     override fun createLine(a: Point, b: Point): Line {
-        if (a.x == b.x) {
-            if (a.y < b.y) {
-                return HorizontalLine(a, b)
-            } else if (a.y > b.y)
-                return InvertedHorizontalLine(a, b)
-        }
-
-        if (a.y == b.y) {
-            if (a.x < b.x) {
-                return VerticalLine(a, b)
-            } else if (a.x > b.x)
-                return InvertedVerticalLine(a, b)
-        }
-
+        if(isHorizontal(a,b)) return HorizontalLine(a,b)
+        if(isInvertedHorizontal(a,b)) return InvertedHorizontalLine(a,b)
+        if(isVertical(a,b)) return VerticalLine(a,b)
+        if(isInvertedVertical(a,b)) return InvertedVerticalLine(a,b)
         return EmptyLine(a, b)
     }
 }
