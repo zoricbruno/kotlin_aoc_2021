@@ -2,8 +2,8 @@ package day05
 
 import day05.mapping.FloorMap
 import day05.mapping.lines.creation.FullLineCreator
+import day05.mapping.lines.creation.LineCreator
 import day05.mapping.parsing.InputParser
-import day05.mapping.lines.creation.StraightLineCreator
 import readInput
 
 fun main() {
@@ -19,7 +19,7 @@ fun main() {
 
 fun part1(input: List<String>): Int {
     val map = FloorMap()
-    val lineCreator = StraightLineCreator()
+    val lineCreator = LineCreator()
     val inputParser = InputParser(lineCreator)
     val directions = inputParser.parse(input)
     directions.forEach{ map.add(it)}
