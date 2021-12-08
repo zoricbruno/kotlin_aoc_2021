@@ -1,26 +1,21 @@
 package day07.crabs.fleet
 
-import kotlin.math.abs
+import day07.crabs.distance.DistanceCalculator
 
-class CrabFleet() {
-    private val submarines = mutableListOf<CrabSubmarine>()
+class CrabFleet(
+    private val distanceCalculator: DistanceCalculator,
+    private val submarines: MutableList<CrabSubmarine> = mutableListOf()
+) {
     fun addSubmarines(submarines: List<CrabSubmarine>) {
         this.submarines.addAll(submarines)
     }
 
-    fun getBestPosition(): Int {
-        return submarines.sortedBy { it.position }
-            .let {
-                if (it.size % 2 == 0) {
-                    (it[it.size / 2].position + it[it.size / 2 - 1].position) / 2
-                } else {
-                    it[it.size / 2].position
-                }
+    fun getCostOfBestPosition(): Int {
+        val smallestDistance = (1 .. submarines.maxOf { it.position })
+            .minOf { position ->
+                submarines.sumOf { crabSubmarine ->
+                    distanceCalculator.calculateDistance(position, crabSubmarine.position) }
             }
-    }
-
-    fun getBestPositionCost(): Int {
-        val bestPosition = getBestPosition()
-        return submarines.sumOf { abs(it.position - bestPosition) }
+        return smallestDistance
     }
 }
