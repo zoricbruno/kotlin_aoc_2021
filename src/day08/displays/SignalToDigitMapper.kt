@@ -18,7 +18,6 @@ class SignalToDigitMapper {
         "abdcfg" to 9
     }
 
-
     fun createMapping(signalPatterns: List<String>) {
         displayToValueMap.clear()
 
