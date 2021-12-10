@@ -13,7 +13,7 @@ class Navigator {
         return lines.map { findError(it) }.sumOf { mapErrorToPoints(it) }
     }
 
-    fun calculateCompletionPoints(lines: List<String>): Long {
+    fun calculateCompletionPoints(lines: List<String>): Long{
         val completionPoints = findCompletingChunks(lines)
             .map { mapCompletingChunkToPoints(it) }
             .sorted()
@@ -25,7 +25,7 @@ class Navigator {
         return incompleteLines.map { findCompletingChunk(it) }
     }
 
-    fun findCompletingChunk(line: String): String {
+    fun findCompletingChunk(line: String): String{
         val pushDownAutomata = LinkedList<Char>()
         for (char in line) {
             if (opening.contains(char)) {
@@ -52,7 +52,7 @@ class Navigator {
         }
     }
 
-    private fun mapClosingCharToPoints(code: Char): Int {
+    private fun mapClosingCharToPoints(code: Char): Int{
         return when (code) {
             ')' -> 1
             ']' -> 2
@@ -80,10 +80,10 @@ class Navigator {
 
     private fun mapOpeningToClosing(code: Char): Char {
         return when (code) {
-            '(' -> ')'
-            '[' -> ']'
-            '{' -> '}'
-            '<' -> '>'
+           '(' -> ')'
+           '[' -> ']'
+           '{' -> '}'
+           '<' -> '>'
             else -> throw NoSuchElementException()
         }
     }
