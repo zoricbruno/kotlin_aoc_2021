@@ -18,13 +18,12 @@ fun part1(input: List<String>): Long {
     val parser = PolymerizatorParser()
     val polymerizer = parser.parsePolymerizer(input)
     val polymer = parser.parsePolymer(input)
-    return polymerizer.findDifferenceBetweenMaxAndMin(polymer, 10)
+    return polymerizer.findDifferenceBetweenLetters(polymer, 10)
 }
 
 fun part2(input: List<String>): Long {
     val parser = PolymerizatorParser()
     val polymerizer = parser.parsePolymerizer(input)
     val polymer = parser.parsePolymer(input)
-    return polymerizer.findDifferenceBetweenMaxAndMin(polymer, 40)
-}
+    return polymerizer.findDifferenceBetweenLetters(polymer, 40)}
 

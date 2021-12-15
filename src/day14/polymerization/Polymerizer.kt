@@ -1,37 +1,50 @@
 package day14.polymerization
 
 class Polymerizer(
-    private val mapper: Map<String, Char>
+    private val conversion: Map<String, Char>
 ) {
-    fun findDifferenceBetweenMaxAndMin(polymer: String, steps: Int): Long{
-        var polymerized = polymerize(polymer, steps)
-        val charsMap = mutableMapOf<Char, Long>()
+    fun findDifferenceBetweenLetters(polymer: String, steps: Int): Long {
 
-        polymerized.forEach{
-            charsMap[it] = charsMap.getOrDefault(it, 0) + 1
+        // Create inital map:
+        var occurrenceMap = mutableMapOf<String, Long>()
+        polymer.windowed(2).forEach {
+            occurrenceMap[it] = occurrenceMap.getOrDefault(it, 0) + 1
         }
-        return charsMap.maxOf { it.value } - charsMap.minOf { it.value }
-    }
 
-    fun polymerize(polymer: String, steps: Int): String {
-        var polymerized = polymer
+        // Create a new occurence map based on the old:
         repeat(steps){
-            polymerized = polymerize(polymerized)
+            occurrenceMap = getNextOccurrenceMap(occurrenceMap)
         }
-        return polymerized
+
+        // Count all letters in pairs as the times first letter occured
+        val charCounts = getCharacterCounts(occurrenceMap)
+
+        // Only first letters considered earlier, add the last letter:
+        val last = polymer.last()
+        charCounts[last] = charCounts.getOrDefault(last, 0) + 1
+
+        // Find the difference between the most and least often:
+        return charCounts.maxOf { it.value } - charCounts.minOf { it.value }
     }
 
-    private fun polymerize(polymer: String): String {
-        val chars = mutableListOf<Char>()
-        for (i in 0 until polymer.count() - 1) {
-            chars.add(polymer[i])
-            chars.add(map(polymer[i], polymer[i + 1]))
+    private fun getNextOccurrenceMap(occurrenceMap: MutableMap<String, Long>): MutableMap<String, Long> {
+        val newOccurrenceMap = mutableMapOf<String, Long>()
+        occurrenceMap.forEach {
+            val char = conversion[it.key]
+            val firstPair: String = "${it.key[0]}${char}"
+            val secondPair: String = "${char}${it.key[1]}"
+            newOccurrenceMap[firstPair] = newOccurrenceMap.getOrDefault(firstPair, 0) + it.value
+            newOccurrenceMap[secondPair] = newOccurrenceMap.getOrDefault(secondPair, 0) + it.value
         }
-        chars.add(polymer[polymer.count() - 1])
-        return chars.joinToString("")
+        return newOccurrenceMap
     }
 
-    private fun map(a: Char, b: Char): Char{
-        return mapper["$a$b"]!!
+    private fun getCharacterCounts(occurrenceMap: Map<String, Long>): MutableMap<Char, Long>{
+        // Count characters.
+        val charCounts = mutableMapOf<Char, Long>()
+        for (item in occurrenceMap) {
+            charCounts[item.key.first()] = charCounts.getOrDefault(item.key.first(), 0) + item.value
+        }
+        return charCounts
     }
 }

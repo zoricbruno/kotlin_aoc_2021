@@ -12,7 +12,7 @@ class PolymerizatorParser {
         val map = mutableMapOf<String, Char>()
         input.drop(2)
             .map { it.split(polymerDelimiter) }
-            .forEach { map[it.first()] = it.last()[0] }
+            .forEach { map[it.first()] = it.last()[0]}
         return Polymerizer(map)
     }
 }
